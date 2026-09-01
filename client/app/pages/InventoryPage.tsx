@@ -71,7 +71,12 @@ export function InventoryPage() {
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                 Add to the pantry
                 </Typography>
-                <TextField id="outlined-basic" label="Item" variant="outlined" />
+                <TextField 
+                    id="outlined-basic"    
+                    label="Item" 
+                    variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)} />
                 <TextField id="outlined-basic" label="Amount" variant="outlined" />
                 <Select
                 labelId="demo-simple-select-label"
