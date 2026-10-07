@@ -72,12 +72,18 @@ export function InventoryPage() {
                 Add to the pantry
                 </Typography>
                 <TextField 
-                    id="outlined-basic"    
+                    id="item"    
                     label="Item" 
                     variant="outlined"
                     value={name}
                     onChange={(e) => setName(e.target.value)} />
-                <TextField id="outlined-basic" label="Amount" variant="outlined" />
+                <TextField 
+                    id="amount" 
+                    label="Amount" 
+                    variant="outlined"
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)} />
                 <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
