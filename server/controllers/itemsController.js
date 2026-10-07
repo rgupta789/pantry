@@ -1,6 +1,9 @@
 const db = require('../db');
 
 async function addItem(req, res) {
+    // currently adds everything as sep entry to db
+    // e.g. adding 1 orange twice is 2 sep entries of 1 orange
+    // should be consolidated into 1 entry of 2 oranges
     
     const { name, amount, loc } = req.body;
 
@@ -13,6 +16,8 @@ async function addItem(req, res) {
         const newItem = await db.one(
             `INSERT INTO inventory_items (name, amount, location)
             VALUES ($1, $2, $3)
+            ON CONFLICT (name, location)
+            DO UPDATE SET amount = inventory_items.amount + EXCLUDED.amount
             RETURNING *`,
             [name, amount, loc]
         );

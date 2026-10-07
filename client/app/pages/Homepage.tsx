@@ -8,13 +8,7 @@ type ListProps = {
 
 function List(props: ListProps) {
   const filteredData = data.filter((el) => {
-    // if no input, return original
-    if (props.input === '') {
-      return el;
-    } else {
-      // return item which contains user input
-      return el.name.toLowerCase().includes(props.input);
-    }
+    return el.name.toLowerCase().startsWith(props.input)
   })
 
   return (
@@ -33,8 +27,8 @@ export function Homepage() {
   const [inputText, setInputText] = useState("");
   let inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     // convert input text to lower case
-    var lowerCase = e.target.value.toLowerCase();
-    setInputText(lowerCase);
+
+    setInputText(e.target.value.toLowerCase().trim())
   }
 
   return (
