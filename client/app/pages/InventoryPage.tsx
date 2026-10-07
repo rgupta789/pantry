@@ -28,6 +28,7 @@ export function InventoryPage() {
     const [loc, setLoc] = React.useState('Pantry');
     const [name, setName] = React.useState('orange');
     const [amount, setAmount] = React.useState('1');
+    const LOCATIONS = ['Pantry', 'Fridge', 'Freezer'];
 
     const handleChange = (event: SelectChangeEvent) => {
       setLoc(event.target.value as string);
@@ -54,11 +55,19 @@ export function InventoryPage() {
 
     return (
         <>
-            <ul>
+            {/* <ul>
                 {data.map((item) => (
                     <li key={item.id}>{item.name}</li>
                 ))}
-            </ul>
+            </ul> */}
+            {LOCATIONS.map((location) => (
+                <section key={location}>
+                    <h3>{location}</h3>
+                    <ul>
+                        {data.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name}</li>))}
+                    </ul>
+                </section>
+            ))}
 
             <Button onClick={handleOpen}>Add</Button>
             <Modal
@@ -90,9 +99,10 @@ export function InventoryPage() {
                 value={loc}
                 onChange={handleChange}
                 >
-                    <MenuItem value="Pantry">Pantry</MenuItem>
+                    {/* <MenuItem value="Pantry">Pantry</MenuItem>
                     <MenuItem value="Fridge">Fridge</MenuItem>
-                    <MenuItem value="Freezer">Freezer</MenuItem>
+                    <MenuItem value="Freezer">Freezer</MenuItem> */}
+                    {LOCATIONS.map((l) => (<MenuItem key={l}>{l}</MenuItem>))}
                 </Select>
                 <Button onClick={handleClick}>ADD</Button>
             </Box>
