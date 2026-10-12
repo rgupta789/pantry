@@ -26,13 +26,19 @@ export function InventoryPage() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [loc, setLoc] = React.useState('Pantry');
-    const [name, setName] = React.useState('orange');
+    const [name, setName] = React.useState('');
     const [amount, setAmount] = React.useState('1');
+    const [unit, setUnit] = React.useState('piece');
+    const UNITS = ['piece', 'kgs', 'mls'];
     const LOCATIONS = ['Pantry', 'Fridge', 'Freezer'];
 
     const handleChange = (event: SelectChangeEvent) => {
       setLoc(event.target.value as string);
     };
+
+    const handleChangeUnit = (event: SelectChangeEvent) => {
+        setUnit(event.target.value as string);
+    }
 
     const handleClick = async () => {
         const b = JSON.stringify({ name, amount, loc });
@@ -55,16 +61,13 @@ export function InventoryPage() {
 
     return (
         <>
-            {/* <ul>
-                {data.map((item) => (
-                    <li key={item.id}>{item.name}</li>
-                ))}
-            </ul> */}
+
             {LOCATIONS.map((location) => (
                 <section key={location}>
                     <h3>{location}</h3>
                     <ul>
-                        {data.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name}</li>))}
+                        {data.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name} {item.amount}</li>))}
+                        
                     </ul>
                 </section>
             ))}
@@ -94,14 +97,20 @@ export function InventoryPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)} />
                 <Select
+                    labelId="demo-simple-select-label"
+                    id="unit"
+                    value={unit}
+                    onChange={handleChangeUnit}
+                >
+                    {UNITS.map((u) => (<MenuItem key={u}>{u}</MenuItem>))}
+                </Select>
+                <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={loc}
                 onChange={handleChange}
                 >
-                    {/* <MenuItem value="Pantry">Pantry</MenuItem>
-                    <MenuItem value="Fridge">Fridge</MenuItem>
-                    <MenuItem value="Freezer">Freezer</MenuItem> */}
+
                     {LOCATIONS.map((l) => (<MenuItem key={l}>{l}</MenuItem>))}
                 </Select>
                 <Button onClick={handleClick}>ADD</Button>
