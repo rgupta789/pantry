@@ -29,8 +29,15 @@ export function InventoryPage() {
     const [name, setName] = React.useState('');
     const [amount, setAmount] = React.useState('1');
     const [unit, setUnit] = React.useState('piece');
-    const UNITS = ['piece', 'kgs', 'mls'];
+    const UNITS = ['piece', 'g', 'ml'];
     const LOCATIONS = ['Pantry', 'Fridge', 'Freezer'];
+    const UNIT_SUFFIX: Record<string, string> = {
+        count: '',
+        volume: 'ml',
+        mass: 'g'
+    }
+    const formatAmount = (amount: number, unitType:string) =>
+        `${amount}${UNIT_SUFFIX[unitType] ?? ''}`;
 
     const handleChange = (event: SelectChangeEvent) => {
       setLoc(event.target.value as string);
@@ -66,7 +73,7 @@ export function InventoryPage() {
                 <section key={location}>
                     <h3>{location}</h3>
                     <ul>
-                        {data.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name} {item.amount}</li>))}
+                        {data.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name} {formatAmount(item.amount, item.unit)}</li>))}
                         
                     </ul>
                 </section>
