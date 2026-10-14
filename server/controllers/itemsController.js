@@ -5,7 +5,7 @@ async function addItem(req, res) {
     // e.g. adding 1 orange twice is 2 sep entries of 1 orange
     // should be consolidated into 1 entry of 2 oranges
     
-    const { name, amount, loc } = req.body;
+    const { name, amount, unit, loc } = req.body;
 
     if (!name || !amount || !loc) {
         return res.status(400).json({ error: 'name, amount and location are required'})
@@ -14,12 +14,12 @@ async function addItem(req, res) {
 
     try {
         const newItem = await db.one(
-            `INSERT INTO inventory_items (name, amount, location)
-            VALUES ($1, $2, $3)
+            `INSERT INTO inventory_items (name, amount, unit, location)
+            VALUES ($1, $2, $3, $4)
             ON CONFLICT (name, location)
             DO UPDATE SET amount = inventory_items.amount + EXCLUDED.amount
             RETURNING *`,
-            [name, amount, loc]
+            [name, amount, unit, loc]
         );
         res.status(201).json(newItem);
     } catch (error) {

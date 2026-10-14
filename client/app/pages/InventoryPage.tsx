@@ -29,6 +29,9 @@ export function InventoryPage() {
     const [name, setName] = React.useState('');
     const [amount, setAmount] = React.useState('1');
     const [unit, setUnit] = React.useState('piece');
+    const [items, setItems] = React.useState('');
+
+
     const UNITS = ['piece', 'g', 'ml'];
     const LOCATIONS = ['Pantry', 'Fridge', 'Freezer'];
     const UNIT_SUFFIX: Record<string, string> = {
@@ -44,11 +47,12 @@ export function InventoryPage() {
     };
 
     const handleChangeUnit = (event: SelectChangeEvent) => {
+        console.log(event.target.value);
         setUnit(event.target.value as string);
     }
 
     const handleClick = async () => {
-        const b = JSON.stringify({ name, amount, loc });
+        const b = JSON.stringify({ name, amount, unit, loc });
         console.log("b: " + b);
         try {
 
@@ -57,7 +61,7 @@ export function InventoryPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, amount, loc }),
+                body: JSON.stringify({ name, amount, unit, loc }),
             });
             const data = await res.json();
             // setMessage(data.message);
@@ -65,6 +69,12 @@ export function InventoryPage() {
             console.error('Request failed: ', err);
         }
     };
+
+    React.useEffect(() => {
+        console.log("test");
+    }, []);
+
+
 
     return (
         <>
@@ -109,7 +119,7 @@ export function InventoryPage() {
                     value={unit}
                     onChange={handleChangeUnit}
                 >
-                    {UNITS.map((u) => (<MenuItem key={u}>{u}</MenuItem>))}
+                    {UNITS.map((u) => (<MenuItem key={u} value={u}>{u}</MenuItem>))}
                 </Select>
                 <Select
                 labelId="demo-simple-select-label"
@@ -118,7 +128,7 @@ export function InventoryPage() {
                 onChange={handleChange}
                 >
 
-                    {LOCATIONS.map((l) => (<MenuItem key={l}>{l}</MenuItem>))}
+                    {LOCATIONS.map((l) => (<MenuItem key={l} value={l}>{l}</MenuItem>))}
                 </Select>
                 <Button onClick={handleClick}>ADD</Button>
             </Box>
