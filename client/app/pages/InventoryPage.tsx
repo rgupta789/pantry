@@ -1,4 +1,4 @@
-import data from "../stuff/ListData.json";
+// import data from "../stuff/ListData.json";
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -73,6 +73,7 @@ export function InventoryPage() {
             });
             const data = await res.json();
             fetchData();
+            setOpen(false);
         } catch (err) {
             console.error('Request failed: ', err);
         }
