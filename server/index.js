@@ -17,6 +17,8 @@ app.get('/click', (req, res) => {
 
 app.post('/add', itemsController.addItem);
 
+app.get('/getitems', itemsController.getItems);
+
 app.listen(8080, () => (
     console.log('Server listening on port 8080')
 ))

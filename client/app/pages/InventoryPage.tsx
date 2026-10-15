@@ -21,6 +21,14 @@ const style = {
     p: 4,
   };
 
+type Item = {
+    id: number;
+    name: string;
+    amount: number;
+    unit: string;
+    location: string;
+}
+
 export function InventoryPage() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -29,15 +37,15 @@ export function InventoryPage() {
     const [name, setName] = React.useState('');
     const [amount, setAmount] = React.useState('1');
     const [unit, setUnit] = React.useState('piece');
-    const [items, setItems] = React.useState('');
+    const [items, setItems] = React.useState<Item[]>([]);
 
 
     const UNITS = ['piece', 'g', 'ml'];
     const LOCATIONS = ['Pantry', 'Fridge', 'Freezer'];
     const UNIT_SUFFIX: Record<string, string> = {
-        count: '',
-        volume: 'ml',
-        mass: 'g'
+        piece: '',
+        ml: 'ml',
+        g: 'g'
     }
     const formatAmount = (amount: number, unitType:string) =>
         `${amount}${UNIT_SUFFIX[unitType] ?? ''}`;
@@ -64,15 +72,28 @@ export function InventoryPage() {
                 body: JSON.stringify({ name, amount, unit, loc }),
             });
             const data = await res.json();
-            // setMessage(data.message);
+            fetchData();
         } catch (err) {
             console.error('Request failed: ', err);
         }
     };
 
+    const fetchData = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/getitems');
+        const result = await response.json();
+        setItems(result);
+        console.log(result);
+    } catch (err) {
+        console.error('could not get items: ', err);
+    }
+    }
+
     React.useEffect(() => {
-        console.log("test");
+
+        fetchData();
     }, []);
+
 
 
 
@@ -83,7 +104,7 @@ export function InventoryPage() {
                 <section key={location}>
                     <h3>{location}</h3>
                     <ul>
-                        {data.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name} {formatAmount(item.amount, item.unit)}</li>))}
+                        {items.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name} {formatAmount(item.amount, item.unit)}</li>))}
                         
                     </ul>
                 </section>

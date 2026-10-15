@@ -28,7 +28,22 @@ async function addItem(req, res) {
     }
 }
 
+async function getItems(req, res) {
+    try {
+        console.log("reached getitems");
+        const result = await db.query('Select * FROM inventory_items');
+
+        console.log(result);
+        res.json(result);
+
+    } catch (error) {
+        console.error('Error getting items: ', error);
+        res.status(500).json({ error: 'Error getting items'});
+    }
+}
+
 
 module.exports = {
-    addItem
+    addItem,
+    getItems
 }
