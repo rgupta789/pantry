@@ -15,13 +15,17 @@ import List from '@mui/material/List';
 
 
 const style = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    width: 350,
+    bgcolor: '#b0dee9',
+    // border: '2px solid #d04e97',
+    borderRadius: 6,
     boxShadow: 24,
     p: 4,
   };
@@ -79,6 +83,11 @@ export function InventoryPage() {
             const data = await res.json();
             fetchData();
             setOpen(false);
+            setName('');
+            setAmount('1');
+            setUnit('piece');
+            setLoc('Pantry');
+
         } catch (err) {
             console.error('Request failed: ', err);
         }
@@ -126,7 +135,19 @@ export function InventoryPage() {
                         borderColor: '#d04e97',
                         borderRadius: 6 }} key={location}>
                         <Typography variant="h6" sx={{ m: 2, color: '#5c5c5c'}}>{location}</Typography>
-                        <CardContent sx={{ flex: 1, overflowY: 'auto', color: '#5c5c5c' }}>
+                        <CardContent sx={{ flex: 1, 
+                            overflowY: 'auto', 
+                            color: '#5c5c5c',
+                            '&::-webkit-scrollbar': { width: 8 },
+                            '&::-webkit-scrollbar-track': { background: 'transparent' },
+                            '&::-webkit-scrollbar-thumb': { background: '#e670ab', borderRadius: 4 },
+                            '&::-webkit-scrollbar-thumb:hover': { background: '#ee81b8' },
+                            pl: '35px',
+                            backgroundImage: `
+                                linear-gradient(to right, transparent 27px, #e57373 27px, #e57373 29px, transparent 29px),
+                                repeating-linear-gradient(transparent, transparent 39px, #b8c4d6 39px, #b8c4d6 40px)
+                            `,
+                            backgroundAttachment: 'local'}}>
                         <List>
                             {items.filter((item) => item.location === location)
                             .map((item) => 
@@ -165,14 +186,26 @@ export function InventoryPage() {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography id="modal-modal-title" variant="h6" component="h2" color='#5c5c5c'>
                 Add to the pantry
                 </Typography>
-                <TextField 
+                <TextField
                     id="item"    
                     label="Item" 
                     variant="outlined"
                     value={name}
+                    sx={{ 
+                        '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: 'transparent', 
+                         }},
+                         backgroundColor: '#d04e97',
+                         input: { color: 'white' } ,
+                        '& .MuiFormLabel-root': {
+                            color: 'white', 
+                        },
+                        borderRadius: 6
+                     }}
                     onChange={(e) => setName(e.target.value)} />
                 <TextField 
                     id="amount" 
@@ -180,23 +213,104 @@ export function InventoryPage() {
                     variant="outlined"
                     type="number"
                     value={amount}
+                    sx={{ 
+                        '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: 'transparent', 
+                         }},
+                         backgroundColor: '#d04e97',
+                         color: 'white',
+                         input: { color: 'white' }  ,
+                         '& .MuiFormLabel-root': {
+                            color: 'white', 
+                        },   
+                        borderRadius: 6
+                     }}
                     onChange={(e) => setAmount(e.target.value)} />
                 <Select
+                    MenuProps={{
+                        slotProps: {
+                            paper: {
+                                sx: {
+                                    bgcolor: '#d04e97'
+                                }
+                            }
+                        }
+                    }}
                     labelId="demo-simple-select-label"
                     id="unit"
                     value={unit}
+                    sx={{ 
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#d04e97', 
+                        },
+                        bgcolor: '#d04e97',
+                        color: 'white',
+                        '& .MuiSelect-icon': {
+                            color: 'white'
+                        },
+                        borderRadius: 6,
+                     }}
                     onChange={handleChangeUnit}
                 >
-                    {UNITS.map((u) => (<MenuItem key={u} value={u}>{u}</MenuItem>))}
+                    {UNITS.map((u) => (<MenuItem 
+                    sx={{ 
+                        backgroundColor: '#d04e97',
+                        color: 'white',
+                        '&.Mui-selected': {
+                            backgroundColor: '#d872ac',
+                            color: 'white'
+                        },
+                        '&:hover': {
+                            backgroundColor:'#d872ac'
+                        }
+                     }}
+                    key={u} 
+                    value={u}>
+                        {u}
+                    </MenuItem>))}
                 </Select>
                 <Select
+                MenuProps={{
+                    slotProps: {
+                        paper: {
+                            sx: {
+                                bgcolor: '#d04e97'
+                            }
+                        }
+                    }
+                }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={loc}
+                    sx={{ 
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#d04e97', 
+                        },
+                        bgcolor: '#d04e97',
+                        color: 'white',
+                        '& .MuiSelect-icon': {
+                            color: 'white'
+                        },
+                        borderRadius: 6,
+                     }}
                 onChange={handleChange}
                 >
 
-                    {LOCATIONS.map((l) => (<MenuItem key={l} value={l}>{l}</MenuItem>))}
+                    {LOCATIONS.map((l) => (<MenuItem sx={{ 
+                        backgroundColor: '#d04e97',
+                        color: 'white',
+                        '&.Mui-selected': {
+                            backgroundColor: '#d872ac',
+                            color: 'white'
+                        },
+                        '&:hover': {
+                            backgroundColor:'#d872ac'
+                        }
+                     }} key={l} 
+                        value={l}>
+                            {l}
+                    </MenuItem>))}
                 </Select>
                 <Button onClick={handleClick}>ADD</Button>
             </Box>
