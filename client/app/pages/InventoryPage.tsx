@@ -8,6 +8,11 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import type { SelectChangeEvent } from '@mui/material/Select';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/Card';
+import { CardContent, ListItem, ListItemText } from '@mui/material';
+import List from '@mui/material/List';
+
 
 const style = {
     position: 'absolute',
@@ -100,18 +105,59 @@ export function InventoryPage() {
 
     return (
         <>
+            <Box sx={{ minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+             }}>
+            <Box sx={{display: 'flex',
+                justifyContent: 'center',
+                // minHeight: '100vh',
+                alignItems: 'center'
+            }}>
+                {LOCATIONS.map((location) => (
+                    <Card sx={{ width: 300, 
+                        height: 600,
+                        m: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        bgcolor: '#fdedc9',
+                        border: '2px solid',
+                        borderColor: '#d04e97',
+                        borderRadius: 6 }} key={location}>
+                        <Typography variant="h6" sx={{ m: 2, color: '#5c5c5c'}}>{location}</Typography>
+                        <CardContent sx={{ flex: 1, overflowY: 'auto', color: '#5c5c5c' }}>
+                        <List>
+                            {items.filter((item) => item.location === location)
+                            .map((item) => 
+                            (<ListItem key={item.id}>
+                                <ListItemText primary={item.name} secondary={formatAmount(item.amount, item.unit)}/>
+                            </ListItem>))}
+                            
+                        </List>
+                        </CardContent>
+                    </Card>
+                ))}
+            </Box>
+            <Box sx={{ display: 'flex', 
+                justifyContent: 'center',
+                 }}>
+                <Button onClick={handleOpen}
+                    sx={{ backgroundColor: '#d04e97',
+                        '&:hover': {
+                            backgroundColor: '#e670ab'
+                        },
+                        borderRadius: 6,
+                        color: 'white',
+                     }}>Add
+                </Button>
+            </Box>
+            </Box>
 
-            {LOCATIONS.map((location) => (
-                <section key={location}>
-                    <h3>{location}</h3>
-                    <ul>
-                        {items.filter((item) => item.location === location).map((item) => (<li key={item.id}>{item.name} {formatAmount(item.amount, item.unit)}</li>))}
-                        
-                    </ul>
-                </section>
-            ))}
 
-            <Button onClick={handleOpen}>Add</Button>
+
+
+
             <Modal
             open={open}
             onClose={handleClose}
