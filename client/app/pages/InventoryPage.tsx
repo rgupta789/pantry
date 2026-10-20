@@ -12,6 +12,8 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/Card';
 import { CardContent, ListItem, ListItemText } from '@mui/material';
 import List from '@mui/material/List';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const style = {
@@ -39,6 +41,10 @@ type Item = {
 }
 
 export function InventoryPage() {
+
+    // FIX: text field/select outlines in modal
+    // change order -> last added should be at top
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -58,6 +64,19 @@ export function InventoryPage() {
     }
     const formatAmount = (amount: number, unitType:string) =>
         `${amount}${UNIT_SUFFIX[unitType] ?? ''}`;
+
+    const handleDelete = async (id: number) => {  
+        try {
+            console.log(id);
+            const res = await fetch(`http://localhost:8080/delete-item/${id}`, {
+            method: 'DELETE'
+            });
+            console.log('delete response: ', res.status);
+            fetchData();
+        } catch (error) {
+            console.error('Delete failed: ', error);
+        }
+    };
 
     const handleChange = (event: SelectChangeEvent) => {
       setLoc(event.target.value as string);
@@ -151,8 +170,23 @@ export function InventoryPage() {
                         <List>
                             {items.filter((item) => item.location === location)
                             .map((item) => 
-                            (<ListItem key={item.id}>
+                            (<ListItem key={item.id} sx={{
+                                '&:hover .hover-button': {
+                                    opacity: 1,
+                                    visibility: 'visible',
+                                }
+                            }}>
                                 <ListItemText primary={item.name} secondary={formatAmount(item.amount, item.unit)}/>
+                                <IconButton
+                                    onClick={() => handleDelete(item.id)}
+                                    className="hover-button"
+                                    sx={{
+                                        opacity: 0,
+                                        visibility: 'hidden',
+                                        transition: 'opacity 0.2s ease-in-out',
+                                    }}>
+                                    <DeleteIcon fontSize='small'/>
+                                </IconButton>
                             </ListItem>))}
                             
                         </List>

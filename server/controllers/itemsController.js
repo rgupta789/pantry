@@ -1,9 +1,6 @@
 const db = require('../db');
 
 async function addItem(req, res) {
-    // currently adds everything as sep entry to db
-    // e.g. adding 1 orange twice is 2 sep entries of 1 orange
-    // should be consolidated into 1 entry of 2 oranges
     
     const { name, amount, unit, loc } = req.body;
 
@@ -28,12 +25,25 @@ async function addItem(req, res) {
     }
 }
 
+
+async function deleteItem(req, res) {
+    // add error handling
+    // console.log('param id:', JSON.stringify(req.params.id), typeof req.params.id);
+    const id = req.params.id;
+    try {
+        const result = await db.query('DELETE FROM inventory_items WHERE id = $1 RETURNING id', [id]);
+        console.log(result);
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting item: ", error);
+    }
+}
+
+
 async function getItems(req, res) {
     try {
-        console.log("reached getitems");
         const result = await db.query('Select * FROM inventory_items');
-
-        console.log(result);
+        // console.log(result);
         res.json(result);
 
     } catch (error) {
@@ -45,5 +55,6 @@ async function getItems(req, res) {
 
 module.exports = {
     addItem,
-    getItems
+    getItems,
+    deleteItem
 }

@@ -17,6 +17,8 @@ app.get('/click', (req, res) => {
 
 app.post('/add', itemsController.addItem);
 
+app.delete('/delete-item/:id', itemsController.deleteItem);
+
 app.get('/getitems', itemsController.getItems);
 
 app.listen(8080, () => (
