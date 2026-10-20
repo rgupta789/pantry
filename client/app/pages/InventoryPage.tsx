@@ -10,10 +10,12 @@ import MenuItem from '@mui/material/MenuItem';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/Card';
-import { CardContent, ListItem, ListItemText } from '@mui/material';
+import { CardContent, Icon, ListItem, ListItemText } from '@mui/material';
 import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Link } from 'react-router';
 
 
 const style = {
@@ -44,6 +46,7 @@ export function InventoryPage() {
 
     // FIX: text field/select outlines in modal
     // change order -> last added should be at top
+    // error handling for delete
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -71,7 +74,7 @@ export function InventoryPage() {
             const res = await fetch(`http://localhost:8080/delete-item/${id}`, {
             method: 'DELETE'
             });
-            console.log('delete response: ', res.status);
+            // console.log('delete response: ', res.status);
             fetchData();
         } catch (error) {
             console.error('Delete failed: ', error);
@@ -112,6 +115,10 @@ export function InventoryPage() {
         }
     };
 
+    const handleBack = () => {
+
+    };
+
     const fetchData = async () => {
     try {
         const response = await fetch('http://localhost:8080/getitems');
@@ -131,13 +138,23 @@ export function InventoryPage() {
 
 
 
+
     return (
         <>
+
             <Box sx={{ minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center'
              }}>
+            <Box>
+                <Link to="/">
+                <IconButton onClick={handleBack}>
+                    <KeyboardBackspaceIcon/>
+                </IconButton>
+                </Link>
+            </Box>
+                
             <Box sx={{display: 'flex',
                 justifyContent: 'center',
                 // minHeight: '100vh',
