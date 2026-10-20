@@ -1,18 +1,30 @@
 [
     {
         "id": 1,
-        "name": "onion"
+        "name": "onion",
+        "location": "Pantry",
+        "amount": 1,
+        "unit": "count"
     },
     {
         "id": 2,
-        "name": "potato"
+        "name": "potato",
+        "location": "Pantry",
+        "amount": 1,
+        "unit": "count"
     },
     {
         "id": 3,
-        "name": "milk"
+        "name": "milk",
+        "location": "Fridge",
+        "amount": 1,
+        "unit": "volume"
     },
     {
         "id": 4,
-        "name": "peas"
+        "name": "peas",
+        "location": "Freezer",
+        "amount": 1,
+        "unit": "mass"
     }
 ]
