@@ -3,6 +3,7 @@ const app = express();
 const db = require('./db');
 const cors = require('cors');
 const itemsController = require('./controllers/itemsController');
+const recipeController = require('./controllers/recipeController');
 
 app.use(cors());
 app.use(express.json());
@@ -32,3 +33,6 @@ db.one('SELECT $1 AS value', 123)
   .catch((error) => {
     console.log('ERROR:', error)
   })
+
+
+  app.get('/get-recipe-names', recipeController.getRecipeNames);

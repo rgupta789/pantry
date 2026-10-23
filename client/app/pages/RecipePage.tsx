@@ -1,4 +1,4 @@
-import Recipes from '../stuff/Recipes.json';
+// import Recipes from '../stuff/Recipes.json';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -12,6 +12,7 @@ import { Link } from 'react-router';
 import ListItemButton from '@mui/material/ListItemButton';
 import IconButton from '@mui/material/IconButton';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import React from 'react';
 
 const theme = createTheme({
     palette: {
@@ -27,8 +28,29 @@ const theme = createTheme({
     }
 });
 
+type RecipeSummary = {
+    id: number,
+    name: string,
+};
+
 
 export function RecipePage() {
+    const [recipes, setRecipes] = React.useState<RecipeSummary[]>([]);
+
+
+    const getRecipes = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/get-recipe-names');
+            const result = await response.json();
+            setRecipes(result);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    React.useEffect(() => {
+        getRecipes();
+    }, [])
 
     return (
         <>
@@ -76,7 +98,7 @@ export function RecipePage() {
                             `,
                             backgroundAttachment: 'local'}}>
                                 <List>
-                                    {Recipes.map((recipe) => (
+                                    {recipes.map((recipe) => (
                                         <ListItemButton component={Link} to={`/recipes/${recipe.id}`}key={recipe.id}>
                                             <ListItemText primary={recipe.name}></ListItemText>
                                         </ListItemButton>
