@@ -35,6 +35,10 @@ db.one('SELECT $1 AS value', 123)
   })
 
 
-  app.get('/get-recipe-names', recipeController.getRecipeNames);
+app.get('/get-recipe-names', recipeController.getRecipeNames);
 
-  app.post('/add-recipe', recipeController.addRecipe);
+app.post('/add-recipe', recipeController.addRecipe);
+
+app.get('/get-recipe/:id', recipeController.getRecipe);
+
+

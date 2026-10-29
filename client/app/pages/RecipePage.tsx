@@ -197,7 +197,6 @@ export function RecipePage() {
 
 
 
-
     React.useEffect(() => {
         getRecipes();
     }, [])

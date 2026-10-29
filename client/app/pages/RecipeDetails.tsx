@@ -38,12 +38,36 @@ const theme = createTheme({
 
 export function RecipeDetails() {
     const { id } = useParams();
-    // const [recipe, setRecipe] = React.useState<Recipe | null>(null);
-    const res = Recipes.find(r => r.id == Number(id));
+    const [recipe, setRecipe] = React.useState<Recipe | null>(null);
 
-    if (!res) {
-    return <Typography sx={{ m: 3 }}>Recipe not found.</Typography>;
+    const getRecipe = async () => {
+        
+        try {
+            console.log("rest");
+            const response = await fetch(`http://localhost:8080/get-recipe/${id}`);
+            if (!response.ok) throw new Error(`Status ${response.status}`);
+            const data: Recipe = await response.json();
+            setRecipe(data);
+
+            console.log(recipe);
+        } catch (error) {
+            console.log(error);
+        }
     }
+
+    React.useEffect(() => {
+        getRecipe();
+    }, []);
+
+    if (!recipe) return <Typography sx={{ m:3 }}>Recipe not found</Typography>
+
+
+
+    // const res = Recipes.find(r => r.id == Number(id));
+
+    // if (!res) {
+    //     return <Typography sx={{ m: 3 }}>Recipe not found.</Typography>;
+    // }
 
 
     return (
@@ -79,7 +103,7 @@ export function RecipeDetails() {
                         
                     }}>
 
-                        <Typography variant="h6" sx={{ m: 2, color: '#5c5c5c'}}>{res.name}</Typography>
+                        <Typography variant="h6" sx={{ m: 2, color: '#5c5c5c'}}>{recipe.name}</Typography>
                         <CardContent sx={{ flex: 1, 
                             overflowY: 'auto', 
                             color: '#5c5c5c',
@@ -95,7 +119,7 @@ export function RecipeDetails() {
                             backgroundAttachment: 'local'}}>
                                 <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
                                     <Typography variant="h6" sx={{ mt: 4 }}>Ingredients</Typography>
-                                    {res.ingredients.map((ing, i) => (
+                                    {recipe.ingredients.map((ing, i) => (
                                         <Box component="li" key={i} sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5, py: 0.5 }}>
                                             <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', flexShrink: 0 }} />
                                             <Typography>
@@ -109,7 +133,7 @@ export function RecipeDetails() {
                                 <List>
                                     <Typography variant="h6" sx={{ mt: 4 }}>Method</Typography>
                                     {
-                                        res.method.map((step, index) => (
+                                        recipe.method.map((step, index) => (
                                     <ListItem key={index} alignItems="flex-start">
                                         <Typography sx={{ mr: 2, fontWeight: 'bold', color: 'primary.main' }}>
                                             {index + 1}.

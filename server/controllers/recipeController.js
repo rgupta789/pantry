@@ -42,8 +42,37 @@ async function addRecipe(req, res) {
     }
 }
 
+async function getRecipe(req, res) {
+    const id = req.params.id;
+    try {
+        const recipe = await db.oneOrNone(
+            `SELECT r.id, r.name, r.method,
+                    COALESCE(
+                        json_agg(
+                            json_build_object('name', ri.name, 'amount', ri.amount, 'unit', ri.unit)
+                            ORDER BY ri.id
+                        ) FILTER (WHERE ri.id IS NOT NULL),
+                        '[]'
+                    ) AS ingredients
+             FROM recipes r
+             LEFT JOIN recipe_ingredients ri ON ri.recipe_id = r.id
+             WHERE r.id = $1
+             GROUP BY r.id`,
+            [id]
+        );
+
+        res.status(201).json(recipe);
+
+    } catch (error) {
+
+        res.status(500).json({ error })
+    }
+
+}
+
 
 module.exports = {
     getRecipeNames,
     addRecipe,
+    getRecipe,
 }
