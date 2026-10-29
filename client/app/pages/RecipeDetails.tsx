@@ -62,14 +62,6 @@ export function RecipeDetails() {
     if (!recipe) return <Typography sx={{ m:3 }}>Recipe not found</Typography>
 
 
-
-    // const res = Recipes.find(r => r.id == Number(id));
-
-    // if (!res) {
-    //     return <Typography sx={{ m: 3 }}>Recipe not found.</Typography>;
-    // }
-
-
     return (
         <>
         

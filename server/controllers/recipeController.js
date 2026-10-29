@@ -70,9 +70,23 @@ async function getRecipe(req, res) {
 
 }
 
+async function deleteRecipe(req, res) {
+
+    const id = req.params.id;
+    try {
+        const result = await db.oneOrNone('DELETE FROM recipes WHERE id = $1 RETURNING id', [id]);
+        res.status(204).send();
+
+    } catch (error) {
+        console.error('Request failed: ', error);
+    }
+
+}
+
 
 module.exports = {
     getRecipeNames,
     addRecipe,
     getRecipe,
+    deleteRecipe,
 }

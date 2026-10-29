@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import { ListItemText } from '@mui/material';
 import { Link } from 'react-router';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -21,6 +21,7 @@ import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 const Modalstyle = {
@@ -195,6 +196,21 @@ export function RecipePage() {
         }));
     };    
 
+    const handleDelete = async (id: number) => {
+
+        try {
+            console.log(id);
+            const result = await fetch(`http://localhost:8080/delete-recipe/${id}`, {
+                method: 'DELETE'
+            });
+
+            getRecipes();
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 
 
     React.useEffect(() => {
@@ -250,9 +266,27 @@ export function RecipePage() {
                             backgroundAttachment: 'local'}}>
                                 <List>
                                     {recipes.map((recipe) => (
-                                        <ListItemButton component={Link} to={`/recipes/${recipe.id}`}key={recipe.id}>
-                                            <ListItemText primary={recipe.name}></ListItemText>
-                                        </ListItemButton>
+                                        <ListItem
+                                            key={recipe.id}
+                                            disablePadding
+                                            sx={{ '&:hover .hover-button': { opacity: 1, visibility: 'visible' } }}
+                                            secondaryAction={
+                                                <IconButton
+                                                    className="hover-button"
+                                                    onClick={() => handleDelete(recipe.id)}
+                                                    sx={{ opacity: 0, visibility: 'hidden', transition: 'opacity 0.2s ease-in-out' }}
+                                                >
+                                                    <DeleteIcon fontSize="small" />
+                                                </IconButton>
+                                            }
+                                        >
+                                            <ListItemButton component={Link} to={`/recipes/${recipe.id}`}>
+                                                <ListItemText primary={recipe.name} />
+                                            </ListItemButton>
+                                        </ListItem>
+
+
+
                                     ))}
                                 </List>
                             </CardContent>

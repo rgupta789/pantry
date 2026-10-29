@@ -41,4 +41,6 @@ app.post('/add-recipe', recipeController.addRecipe);
 
 app.get('/get-recipe/:id', recipeController.getRecipe);
 
+app.delete('/delete-recipe/:id', recipeController.deleteRecipe);
+
 
