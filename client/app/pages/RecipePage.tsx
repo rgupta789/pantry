@@ -293,7 +293,12 @@ export function RecipePage() {
                     </Card>
 
                 </Box>
-                <Box><Button onClick={handleOpen}>open</Button></Box>
+                <Box display="flex" justifyContent="center">
+                    <IconButton onClick={handleOpen}>
+                        <AddCircleIcon fontSize='large' sx={{ color: '#d04e97' }}/>
+                    </IconButton>
+                    {/* <Button onClick={handleOpen}>open</Button> */}
+                </Box>
 
             </Box>
 
