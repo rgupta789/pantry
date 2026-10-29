@@ -19,6 +19,8 @@ import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 
 const Modalstyle = {
@@ -75,6 +77,11 @@ type RecipeForm = {
 export function RecipePage() {
     const [recipes, setRecipes] = React.useState<RecipeSummary[]>([]);
     const [openModal, setOpenModal] = React.useState(false);
+    const [snack, setSnack] = React.useState<{
+        open: boolean;
+        message: string;
+        severity: 'success' | 'error'
+    }>({ open: false, message: '', severity: 'success' });
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
@@ -89,6 +96,11 @@ export function RecipePage() {
         method: ['']
     };
     const [form, setForm] = React.useState<RecipeForm>(emptyForm);
+
+    const formIsValid =
+        form.name.trim() !== '' &&
+        form.method.some(s => s.trim() != '') &&
+        form.ingredients.some(i => i.name.trim() !== '');
 
 
     const addIngredient = () => {
@@ -139,14 +151,23 @@ export function RecipePage() {
                 },
                 body: JSON.stringify({ form })
             });
+            if (!res.ok) throw new Error(`Status ${res.status}`);
 
-            // await res.json();
+            await res.json();
+
+            setSnack({ 
+                open: true,
+                message: 'Recipe added!',
+                severity: 'success'
+            });
+            setOpenModal(false);
 
             getRecipes();
             setForm(emptyForm);
 
         } catch (error) {
             console.log('Adding failed: ', error);
+            setSnack({ open: true, message: 'Could not add recipe.', severity: 'error' });
         }
 
     };
@@ -174,9 +195,14 @@ export function RecipePage() {
         }));
     };    
 
+
+
+
     React.useEffect(() => {
         getRecipes();
     }, [])
+
+
 
     return (
         <>
@@ -333,7 +359,7 @@ export function RecipePage() {
                     ))}
                     <Button onClick={addStep}>Add Step</Button>
 
-                    <Button onClick={handleAddRecipe}>Submit</Button>
+                    <Button onClick={handleAddRecipe} disabled={!formIsValid}>Submit</Button>
 
                     </Box>
 
@@ -341,6 +367,23 @@ export function RecipePage() {
 
             
             </Modal>
+
+
+            <Snackbar
+                open={snack.open}
+                autoHideDuration={3000}
+                onClose={() => setSnack(prev => ({ ...prev, open: false }))}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    severity={snack.severity}
+                    variant="filled"
+                    onClose={() => setSnack(prev => ({ ...prev, open: false }))}
+                >
+                    {snack.message}   
+                </Alert>
+
+            </Snackbar>
 
 
 

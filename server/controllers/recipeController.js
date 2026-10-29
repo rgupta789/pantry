@@ -12,6 +12,11 @@ async function getRecipeNames(req, res) {
 
 async function addRecipe(req, res) {
     const { name, method, ingredients } = req.body.form;
+
+    if (!name || method.length === 0 || ingredients.length === 0) {
+        return res.status(400).json({ error: 'name, ingredients and method are required'})
+    }
+
     console.log(method);
     try {
         const recipe = await db.one(
