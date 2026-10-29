@@ -36,3 +36,5 @@ db.one('SELECT $1 AS value', 123)
 
 
   app.get('/get-recipe-names', recipeController.getRecipeNames);
+
+  app.post('/add-recipe', recipeController.addRecipe);
