@@ -138,18 +138,18 @@ export function InventoryPage() {
     return (
         <>
 
-            <Box sx={{ minHeight: '100vh',
+            <Box sx={{ minHeight: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center'
+                justifyContent: 'flex-start'
              }}>
-            <Box>
+            {/* <Box>
                 <Link to="/">
                 <IconButton>
                     <KeyboardBackspaceIcon/>
                 </IconButton>
                 </Link>
-            </Box>
+            </Box> */}
                 
             <Box sx={{display: 'flex',
                 justifyContent: 'center',
@@ -158,7 +158,8 @@ export function InventoryPage() {
             }}>
                 {LOCATIONS.map((location) => (
                     <Card sx={{ width: 300, 
-                        height: 600,
+                        height: 'calc(100vh - 180px)',
+                        minHeight: 500,
                         m: 3,
                         display: 'flex',
                         flexDirection: 'column',
