@@ -67,10 +67,10 @@ export function RecipeDetails() {
         
         <ThemeProvider theme={theme}>
             <Box sx={{
-                minHeight: '100vh',
+                minHeight: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center'
+                justifyContent: 'flex-start'
             }}>
                 
                 <Box>
@@ -88,7 +88,8 @@ export function RecipeDetails() {
                     <Card sx={{
                         width: 500,
                         bgcolor: 'background',
-                        height: 800,
+                        height: 'calc(100vh - 180px)',
+                        minHeight: 500,
                         m: 3,
                         display: 'flex',
                         flexDirection: 'column',
