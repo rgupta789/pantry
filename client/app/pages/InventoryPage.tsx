@@ -115,10 +115,6 @@ export function InventoryPage() {
         }
     };
 
-    const handleBack = () => {
-
-    };
-
     const fetchData = async () => {
     try {
         const response = await fetch('http://localhost:8080/getitems');
@@ -149,7 +145,7 @@ export function InventoryPage() {
              }}>
             <Box>
                 <Link to="/">
-                <IconButton onClick={handleBack}>
+                <IconButton>
                     <KeyboardBackspaceIcon/>
                 </IconButton>
                 </Link>

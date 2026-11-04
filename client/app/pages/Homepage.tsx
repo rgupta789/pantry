@@ -43,6 +43,9 @@ export function Homepage() {
       <List input={inputText} />
       <Link to="/inventory">
         <button>Inventory</button>
+      </Link>
+      <Link to="/recipes">
+        <button>Recipes</button>
       </Link>     
     </>
   );
