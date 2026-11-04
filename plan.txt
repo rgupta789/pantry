@@ -1,0 +1,18 @@
+Homepage
+- search for an item
+- can select item to see list of recipes associated with it?
+
+Inventory
+- List of all items? sorted by location
+- add item
+- delete item 
+- update item
+- click on item to see details (quantity, expiry (opt), when put in fridge (opt),), can also update and delete from here
+- lazy scroll?
+
+recipes
+- list all recipes
+- add recipes
+- delete recipes
+- edit recipes
+- click on recipe to update or delete
