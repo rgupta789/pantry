@@ -9,13 +9,12 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/Card';
 import { CardContent, Icon, ListItem, ListItemText } from '@mui/material';
 import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import { Link } from 'react-router';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import SearchIcon from '@mui/icons-material/Search';
 
 
 const style = {
@@ -27,9 +26,8 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 350,
-    bgcolor: '#b0dee9',
-    // border: '2px solid #d04e97',
-    borderRadius: 6,
+    bgcolor: 'secondary.main',
+    borderRadius: 1,
     boxShadow: 24,
     p: 4,
   };
@@ -44,7 +42,7 @@ type Item = {
 
 export function InventoryPage() {
 
-    // FIX: text field/select outlines in modal
+    // FIX: amount shouldn't be negative
     // change order -> last added should be at top
     // error handling for delete
 
@@ -56,6 +54,7 @@ export function InventoryPage() {
     const [amount, setAmount] = React.useState('1');
     const [unit, setUnit] = React.useState('piece');
     const [items, setItems] = React.useState<Item[]>([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
 
 
     const UNITS = ['piece', 'g', 'ml'];
@@ -126,6 +125,10 @@ export function InventoryPage() {
     }
     }
 
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value.toLowerCase().trim())
+    }
+
     React.useEffect(() => {
 
         fetchData();
@@ -138,42 +141,42 @@ export function InventoryPage() {
     return (
         <>
 
-            <Box sx={{ minHeight: '100vh',
+            <Box sx={{ minHeight: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center'
+                justifyContent: 'flex-start'
              }}>
-            <Box>
-                <Link to="/">
-                <IconButton>
-                    <KeyboardBackspaceIcon/>
-                </IconButton>
-                </Link>
+            
+            <Box sx={{ m: 2, display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center' }}>
+                <Box />
+                <Box sx={{ width: 500 }}>
+                    <TextField placeholder="Search for an ingredient" value={searchTerm} onChange={handleSearch} fullWidth/>
+                </Box>
+                <Box sx={{ display: 'flex', 
+                    justifySelf: 'end',
+                    }}>
+                        <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
+                            <AddCircleIcon fontSize='large' />
+                        </IconButton>
+                </Box>
             </Box>
                 
             <Box sx={{display: 'flex',
                 justifyContent: 'center',
-                // minHeight: '100vh',
                 alignItems: 'center'
             }}>
                 {LOCATIONS.map((location) => (
                     <Card sx={{ width: 300, 
-                        height: 600,
-                        m: 3,
+                        height: 'calc(100vh - 180px)',
+                        minHeight: 500,
+                        m: 1,
                         display: 'flex',
                         flexDirection: 'column',
-                        bgcolor: '#fdedc9',
-                        border: '2px solid',
-                        borderColor: '#d04e97',
-                        borderRadius: 6 }} key={location}>
-                        <Typography variant="h6" sx={{ m: 2, color: '#5c5c5c'}}>{location}</Typography>
+                        bgcolor: 'background.paper',
+                        borderRadius: 1 }} key={location}>
+                        <Typography variant="h6" sx={{ m: 2 }}>{location}</Typography>
                         <CardContent sx={{ flex: 1, 
                             overflowY: 'auto', 
-                            color: '#5c5c5c',
-                            '&::-webkit-scrollbar': { width: 8 },
-                            '&::-webkit-scrollbar-track': { background: 'transparent' },
-                            '&::-webkit-scrollbar-thumb': { background: '#e670ab', borderRadius: 4 },
-                            '&::-webkit-scrollbar-thumb:hover': { background: '#ee81b8' },
                             pl: '35px',
                             backgroundImage: `
                                 linear-gradient(to right, transparent 27px, #e57373 27px, #e57373 29px, transparent 29px),
@@ -182,6 +185,7 @@ export function InventoryPage() {
                             backgroundAttachment: 'local'}}>
                         <List>
                             {items.filter((item) => item.location === location)
+                            .filter((item) => item.name.includes(searchTerm))
                             .map((item) => 
                             (<ListItem key={item.id} sx={{
                                 '&:hover .hover-button': {
@@ -207,22 +211,14 @@ export function InventoryPage() {
                     </Card>
                 ))}
             </Box>
-            <Box sx={{ display: 'flex', 
+            {/* <Box sx={{ display: 'flex', 
                 justifyContent: 'center',
                  }}>
-                <Button onClick={handleOpen}
-                    sx={{ backgroundColor: '#d04e97',
-                        '&:hover': {
-                            backgroundColor: '#e670ab'
-                        },
-                        borderRadius: 6,
-                        color: 'white',
-                     }}>Add
-                </Button>
+                    <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
+                        <AddCircleIcon fontSize='large' />
+                    </IconButton>
+            </Box> */}
             </Box>
-            </Box>
-
-
 
 
 
@@ -233,7 +229,7 @@ export function InventoryPage() {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2" color='#5c5c5c'>
+                <Typography id="modal-modal-title" variant="h6" component="h2" color='text.primary'>
                 Add to the pantry
                 </Typography>
                 <TextField
@@ -241,18 +237,6 @@ export function InventoryPage() {
                     label="Item" 
                     variant="outlined"
                     value={name}
-                    sx={{ 
-                        '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                            borderColor: 'transparent', 
-                         }},
-                         backgroundColor: '#d04e97',
-                         input: { color: 'white' } ,
-                        '& .MuiFormLabel-root': {
-                            color: 'white', 
-                        },
-                        borderRadius: 6
-                     }}
                     onChange={(e) => setName(e.target.value)} />
                 <TextField 
                     id="amount" 
@@ -260,101 +244,27 @@ export function InventoryPage() {
                     variant="outlined"
                     type="number"
                     value={amount}
-                    sx={{ 
-                        '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                            borderColor: 'transparent', 
-                         }},
-                         backgroundColor: '#d04e97',
-                         color: 'white',
-                         input: { color: 'white' }  ,
-                         '& .MuiFormLabel-root': {
-                            color: 'white', 
-                        },   
-                        borderRadius: 6
-                     }}
                     onChange={(e) => setAmount(e.target.value)} />
                 <Select
-                    MenuProps={{
-                        slotProps: {
-                            paper: {
-                                sx: {
-                                    bgcolor: '#d04e97'
-                                }
-                            }
-                        }
-                    }}
                     labelId="demo-simple-select-label"
                     id="unit"
                     value={unit}
-                    sx={{ 
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#d04e97', 
-                        },
-                        bgcolor: '#d04e97',
-                        color: 'white',
-                        '& .MuiSelect-icon': {
-                            color: 'white'
-                        },
-                        borderRadius: 6,
-                     }}
                     onChange={handleChangeUnit}
                 >
                     {UNITS.map((u) => (<MenuItem 
-                    sx={{ 
-                        backgroundColor: '#d04e97',
-                        color: 'white',
-                        '&.Mui-selected': {
-                            backgroundColor: '#d872ac',
-                            color: 'white'
-                        },
-                        '&:hover': {
-                            backgroundColor:'#d872ac'
-                        }
-                     }}
                     key={u} 
                     value={u}>
                         {u}
                     </MenuItem>))}
                 </Select>
                 <Select
-                MenuProps={{
-                    slotProps: {
-                        paper: {
-                            sx: {
-                                bgcolor: '#d04e97'
-                            }
-                        }
-                    }
-                }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={loc}
-                    sx={{ 
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#d04e97', 
-                        },
-                        bgcolor: '#d04e97',
-                        color: 'white',
-                        '& .MuiSelect-icon': {
-                            color: 'white'
-                        },
-                        borderRadius: 6,
-                     }}
                 onChange={handleChange}
                 >
 
-                    {LOCATIONS.map((l) => (<MenuItem sx={{ 
-                        backgroundColor: '#d04e97',
-                        color: 'white',
-                        '&.Mui-selected': {
-                            backgroundColor: '#d872ac',
-                            color: 'white'
-                        },
-                        '&:hover': {
-                            backgroundColor:'#d872ac'
-                        }
-                     }} key={l} 
+                    {LOCATIONS.map((l) => (<MenuItem key={l} 
                         value={l}>
                             {l}
                     </MenuItem>))}
