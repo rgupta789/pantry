@@ -23,7 +23,7 @@ export default function Layout() {
                 {/* < Outlet /> */}
             </Box>
 
-            <Box component="main" sx={{ flex: 1, minHeight: 1, overflowY: 'auto' }}>
+            <Box component="main" sx={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
                 <Outlet />
             </Box>
         

@@ -14,6 +14,7 @@ import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import SearchIcon from '@mui/icons-material/Search';
 
 
 const style = {
@@ -53,6 +54,7 @@ export function InventoryPage() {
     const [amount, setAmount] = React.useState('1');
     const [unit, setUnit] = React.useState('piece');
     const [items, setItems] = React.useState<Item[]>([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
 
 
     const UNITS = ['piece', 'g', 'ml'];
@@ -123,6 +125,10 @@ export function InventoryPage() {
     }
     }
 
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value.toLowerCase().trim())
+    }
+
     React.useEffect(() => {
 
         fetchData();
@@ -140,6 +146,20 @@ export function InventoryPage() {
                 flexDirection: 'column',
                 justifyContent: 'flex-start'
              }}>
+            
+            <Box sx={{ m: 2, display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center' }}>
+                <Box />
+                <Box sx={{ width: 500 }}>
+                    <TextField placeholder="Search for an ingredient" value={searchTerm} onChange={handleSearch} fullWidth/>
+                </Box>
+                <Box sx={{ display: 'flex', 
+                    justifySelf: 'end',
+                    }}>
+                        <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
+                            <AddCircleIcon fontSize='large' />
+                        </IconButton>
+                </Box>
+            </Box>
                 
             <Box sx={{display: 'flex',
                 justifyContent: 'center',
@@ -149,7 +169,7 @@ export function InventoryPage() {
                     <Card sx={{ width: 300, 
                         height: 'calc(100vh - 180px)',
                         minHeight: 500,
-                        m: 3,
+                        m: 1,
                         display: 'flex',
                         flexDirection: 'column',
                         bgcolor: 'background.paper',
@@ -165,6 +185,7 @@ export function InventoryPage() {
                             backgroundAttachment: 'local'}}>
                         <List>
                             {items.filter((item) => item.location === location)
+                            .filter((item) => item.name.includes(searchTerm))
                             .map((item) => 
                             (<ListItem key={item.id} sx={{
                                 '&:hover .hover-button': {
@@ -190,13 +211,13 @@ export function InventoryPage() {
                     </Card>
                 ))}
             </Box>
-            <Box sx={{ display: 'flex', 
+            {/* <Box sx={{ display: 'flex', 
                 justifyContent: 'center',
                  }}>
                     <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
                         <AddCircleIcon fontSize='large' />
                     </IconButton>
-            </Box>
+            </Box> */}
             </Box>
 
 
