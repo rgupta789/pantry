@@ -33,7 +33,8 @@ const Modalstyle = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 600,
-    bgcolor: '#b0dee9',
+    bgcolor: 'secondary.main',
+    // bgcolor: '#b0dee9',
     // border: '2px solid #d04e97',
     borderRadius: 2,
     boxShadow: 24,
@@ -43,19 +44,19 @@ const Modalstyle = {
     overflow: 'hidden',
   };
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#d04e97'
-        },
-        background: {
-            paper: '#fdedc9'
-        },
-    },
-    shape: {
-        borderRadius: 24
-    }
-});
+// const theme = createTheme({
+//     palette: {
+//         primary: {
+//             main: '#d04e97'
+//         },
+//         background: {
+//             paper: '#fdedc9'
+//         },
+//     },
+//     shape: {
+//         borderRadius: 24
+//     }
+// });
 
 type RecipeSummary = {
     id: number,
@@ -221,20 +222,13 @@ export function RecipePage() {
 
     return (
         <>
-        <ThemeProvider theme={theme}>
             <Box sx={{
                 minHeight: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start'
             }}>
-                {/* <Box>
-                    <Link to="/">
-                    <IconButton>
-                        <KeyboardBackspaceIcon/>
-                    </IconButton>
-                    </Link>
-                </Box> */}
+
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -242,7 +236,7 @@ export function RecipePage() {
                 }}>
                     <Card sx={{
                         width: 500,
-                        bgcolor: 'background',
+                        bgcolor: 'background.paper',
                         height: 'calc(100vh - 180px)',
                         minHeight: 400,
                         m: 3,
@@ -251,14 +245,9 @@ export function RecipePage() {
                         
                     }}>
 
-                        <Typography variant="h6" sx={{ m: 2, color: '#5c5c5c'}}>Recipes</Typography>
+                        <Typography variant="h6" sx={{ m: 2 }}>Recipes</Typography>
                         <CardContent sx={{ flex: 1, 
                             overflowY: 'auto', 
-                            color: '#5c5c5c',
-                            '&::-webkit-scrollbar': { width: 8 },
-                            '&::-webkit-scrollbar-track': { background: 'transparent' },
-                            '&::-webkit-scrollbar-thumb': { background: '#e670ab', borderRadius: 4 },
-                            '&::-webkit-scrollbar-thumb:hover': { background: '#ee81b8' },
                             pl: '35px',
                             backgroundImage: `
                                 linear-gradient(to right, transparent 27px, #e57373 27px, #e57373 29px, transparent 29px),
@@ -295,10 +284,9 @@ export function RecipePage() {
 
                 </Box>
                 <Box display="flex" justifyContent="center">
-                    <IconButton onClick={handleOpen}>
-                        <AddCircleIcon fontSize='large' sx={{ color: '#d04e97' }}/>
+                    <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
+                        <AddCircleIcon fontSize='large' />
                     </IconButton>
-                    {/* <Button onClick={handleOpen}>open</Button> */}
                 </Box>
 
             </Box>
@@ -321,12 +309,8 @@ export function RecipePage() {
                         flexDirection: 'column',
                         gap: 2,
                         overflowY: 'auto',
-                        '&::-webkit-scrollbar': { width: 8 },
-                        '&::-webkit-scrollbar-track': { background: 'transparent' },
-                        '&::-webkit-scrollbar-thumb': { background: '#e670ab', borderRadius: 4 },
-                        '&::-webkit-scrollbar-thumb:hover': { background: '#ee81b8' },
                         }}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" color='#5c5c5c'>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
                         Add a recipe
                     </Typography>
                     <TextField
@@ -334,18 +318,6 @@ export function RecipePage() {
                         label="Recipe Name" 
                         variant="outlined"
                         value={form.name}
-                        sx={{ 
-                            '& .MuiOutlinedInput-root': {
-                            '& fieldset': {
-                                borderColor: 'transparent', 
-                            }},
-                            backgroundColor: '#d04e97',
-                            input: { color: 'white' } ,
-                            '& .MuiFormLabel-root': {
-                                color: 'white', 
-                            },
-                            borderRadius: 6
-                        }}
                         onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))} />
 
                     {form.ingredients.map((ing, i) => (
@@ -426,9 +398,6 @@ export function RecipePage() {
 
 
 
-
-        </ThemeProvider>
-            
         </>
     );
 }

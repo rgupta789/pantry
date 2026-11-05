@@ -4,14 +4,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-// import { theme } from '../theme';
+import { theme } from '../theme';
 
 export default function Layout() {
     const { pathname } = useLocation();
     const current = pathname.startsWith('/recipes') ? '/recipes' : '/';
     
     return (
-        <>
+        <ThemeProvider theme={theme}>
+            <CssBaseline>
         <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
             <Box sx={{  flexShrink: 0, display: 'flex', justifyContent: 'center', borderBottom: 1, borderColor: 'divider' }}>
@@ -27,7 +28,8 @@ export default function Layout() {
             </Box>
         
         </Box>
-        </>
+        </CssBaseline>
+        </ThemeProvider>
 
 
     );

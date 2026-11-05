@@ -21,21 +21,6 @@ type Recipe = {
 };
 
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#d04e97'
-        },
-        background: {
-            paper: '#fdedc9'
-        },
-    },
-    shape: {
-        borderRadius: 24
-    }
-});
-
-
 export function RecipeDetails() {
     const { id } = useParams();
     const [recipe, setRecipe] = React.useState<Recipe | null>(null);
@@ -65,7 +50,7 @@ export function RecipeDetails() {
     return (
         <>
         
-        <ThemeProvider theme={theme}>
+        <>
             <Box sx={{
                 minHeight: '100%',
                 display: 'flex',
@@ -73,13 +58,6 @@ export function RecipeDetails() {
                 justifyContent: 'flex-start'
             }}>
                 
-                <Box>
-                    <Link to="/recipes">
-                    <IconButton>
-                        <KeyboardBackspaceIcon/>
-                    </IconButton>
-                    </Link>
-                </Box>
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -96,14 +74,9 @@ export function RecipeDetails() {
                         
                     }}>
 
-                        <Typography variant="h6" sx={{ m: 2, color: '#5c5c5c'}}>{recipe.name}</Typography>
+                        <Typography variant="h6" sx={{ m: 2 }}>{recipe.name}</Typography>
                         <CardContent sx={{ flex: 1, 
                             overflowY: 'auto', 
-                            color: '#5c5c5c',
-                            '&::-webkit-scrollbar': { width: 8 },
-                            '&::-webkit-scrollbar-track': { background: 'transparent' },
-                            '&::-webkit-scrollbar-thumb': { background: '#e670ab', borderRadius: 4 },
-                            '&::-webkit-scrollbar-thumb:hover': { background: '#ee81b8' },
                             pl: '35px',
                             backgroundImage: `
                                 linear-gradient(to right, transparent 27px, #e57373 27px, #e57373 29px, transparent 29px),
@@ -139,10 +112,17 @@ export function RecipeDetails() {
                             </CardContent>
                     </Card>
 
-                </Box>
 
+                </Box>
+                <Box>
+                    <Link to="/recipes">
+                    <IconButton>
+                        <KeyboardBackspaceIcon/>
+                    </IconButton>
+                    </Link>
+                </Box>
             </Box>
-        </ThemeProvider>
+        </>
             
         </>
     );
