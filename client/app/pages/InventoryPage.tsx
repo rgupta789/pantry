@@ -9,14 +9,10 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/Card';
 import { CardContent, Icon, ListItem, ListItemText } from '@mui/material';
 import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import { Link } from 'react-router';
-import Alert from '@mui/material/Alert';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
@@ -30,7 +26,6 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 350,
     bgcolor: 'secondary.main',
-    // border: '2px solid #d04e97',
     borderRadius: 1,
     boxShadow: 24,
     p: 4,

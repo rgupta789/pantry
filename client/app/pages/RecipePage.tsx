@@ -1,6 +1,4 @@
 // import Recipes from '../stuff/Recipes.json';
-import { createTheme, private_excludeVariablesFromRoot, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -11,7 +9,6 @@ import { ListItemText } from '@mui/material';
 import { Link } from 'react-router';
 import ListItemButton from '@mui/material/ListItemButton';
 import IconButton from '@mui/material/IconButton';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import React from 'react';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
@@ -34,29 +31,12 @@ const Modalstyle = {
     transform: 'translate(-50%, -50%)',
     width: 600,
     bgcolor: 'secondary.main',
-    // bgcolor: '#b0dee9',
-    // border: '2px solid #d04e97',
     borderRadius: 2,
     boxShadow: 24,
     p: 0,
     maxHeight: '90vh',
-    // overflowY: 'auto',
     overflow: 'hidden',
   };
-
-// const theme = createTheme({
-//     palette: {
-//         primary: {
-//             main: '#d04e97'
-//         },
-//         background: {
-//             paper: '#fdedc9'
-//         },
-//     },
-//     shape: {
-//         borderRadius: 24
-//     }
-// });
 
 type RecipeSummary = {
     id: number,
