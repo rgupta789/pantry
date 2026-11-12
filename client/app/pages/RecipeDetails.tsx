@@ -54,6 +54,13 @@ export function RecipeDetails() {
                 flexDirection: 'column',
                 justifyContent: 'flex-start'
             }}>
+                <Box>
+                    <Link to="/recipes">
+                    <IconButton>
+                        <KeyboardBackspaceIcon/>
+                    </IconButton>
+                    </Link>
+                </Box>
                 
                 <Box sx={{
                     display: 'flex',
@@ -111,13 +118,13 @@ export function RecipeDetails() {
 
 
                 </Box>
-                <Box>
+                {/* <Box>
                     <Link to="/recipes">
                     <IconButton>
                         <KeyboardBackspaceIcon/>
                     </IconButton>
                     </Link>
-                </Box>
+                </Box> */}
             </Box>
         </>
             

@@ -19,7 +19,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import { useSearchParams } from 'react-router';
+import { PanoramaSharp } from '@mui/icons-material';
 
 const Modalstyle = {
     display: 'flex',
@@ -64,6 +65,10 @@ export function RecipePage() {
         message: string;
         severity: 'success' | 'error'
     }>({ open: false, message: '', severity: 'success' });
+    const [searchTerm, setSearchTerm] = React.useState('');
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const q = searchParams.get('q') ?? '';
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
@@ -156,12 +161,19 @@ export function RecipePage() {
 
     const getRecipes = async () => {
         try {
-            const response = await fetch('http://localhost:8080/get-recipe-names');
-            const result = await response.json();
-            setRecipes(result);
+            const result = await fetch (`http://localhost:8080/get-recipe-names?q=${encodeURIComponent(q)}`);
+            setRecipes(await result.json());
+            
         } catch (error) {
-            console.error(error);
+            console.log('Request failed: , error');
         }
+        // try {
+        //     const response = await fetch('http://localhost:8080/get-recipe-names');
+        //     const result = await response.json();
+        //     setRecipes(result);
+        // } catch (error) {
+        //     console.error(error);
+        // }
     };
 
     const updateIngredient = (
@@ -192,11 +204,24 @@ export function RecipePage() {
         }
     }
 
+    const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        // setSearchTerm(e.target.value.toLowerCase().trim());
+        setSearchParams({ q: e.target.value }, { replace: true });
+        // try {
+        //     const result = await fetch (`http://localhost:8080/get-recipe-names?q=${encodeURIComponent(q)}`);
+        //     setRecipes(await result.json());
+            
+        // } catch (error) {
+        //     console.log('Request failed: , error');
+        // }
+    }
+
+
 
 
     React.useEffect(() => {
         getRecipes();
-    }, [])
+    }, [q])
 
 
 
@@ -209,6 +234,20 @@ export function RecipePage() {
                 justifyContent: 'flex-start'
             }}>
 
+                <Box sx={{ m: 2, display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center' }}>
+                    <Box />
+                    <Box sx={{ width: 500 }}>
+                        <TextField placeholder="Search for a recipe or an ingredient" value={q} onChange={handleSearch} fullWidth/>
+                    </Box>
+                    <Box sx={{ display: 'flex', 
+                        justifySelf: 'end'
+                        }}>
+                            <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
+                                <AddCircleIcon fontSize='large' />
+                            </IconButton>
+                    </Box>
+                </Box>
+
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -219,7 +258,7 @@ export function RecipePage() {
                         bgcolor: 'background.paper',
                         height: 'calc(100vh - 180px)',
                         minHeight: 400,
-                        m: 3,
+                        m: 1,
                         display: 'flex',
                         flexDirection: 'column',
                         
@@ -262,11 +301,6 @@ export function RecipePage() {
                             </CardContent>
                     </Card>
 
-                </Box>
-                <Box display="flex" justifyContent="center">
-                    <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
-                        <AddCircleIcon fontSize='large' />
-                    </IconButton>
                 </Box>
 
             </Box>

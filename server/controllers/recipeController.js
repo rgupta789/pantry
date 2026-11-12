@@ -1,11 +1,31 @@
 const db = require('../db');
 
 async function getRecipeNames(req, res) {
+    const searchText = (req.query.q ?? '').toString().trim();
+    console.log(searchText);
     try {
-        const result = await db.query('SELECT id, name FROM recipes ORDER BY name;');
+        const result = await db.any(`
+            SELECT r.id, r.name,
+                CASE WHEN $1 = '' THEN NULL ELSE (
+                    SELECT string_agg(ri.name, ', ' ORDER BY ri.id)
+                    FROM recipe_ingredients ri
+                    WHERE ri.recipe_id = r.id AND ri.name ILIKE '%' || $1 || '%'
+                ) END AS matched_ingredients
+            FROM recipes r
+            WHERE $1 = ''
+            OR r.name ILIKE '%' || $1 || '%'
+            OR EXISTS (
+                SELECT 1 FROM recipe_ingredients ri
+                WHERE ri.recipe_id = r.id AND ri.name ILIKE '%' || $1 || '%'
+            )
+            ORDER BY r.name;
+            `,
+        [searchText]);
         res.json(result);
 
+        
     } catch (error) {
+        console.error('Error getting recipes: ', error);
         res.status(500).json({ error: 'Error getting recipes' });
     }
 }

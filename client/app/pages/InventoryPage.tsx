@@ -153,7 +153,7 @@ export function InventoryPage() {
                     <TextField placeholder="Search for an ingredient" value={searchTerm} onChange={handleSearch} fullWidth/>
                 </Box>
                 <Box sx={{ display: 'flex', 
-                    justifySelf: 'end',
+                    justifySelf: 'end'
                     }}>
                         <IconButton onClick={handleOpen} sx={{ color:'primary.main' }}>
                             <AddCircleIcon fontSize='large' />
