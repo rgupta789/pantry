@@ -206,7 +206,7 @@ export function RecipePage() {
 
     const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
         // setSearchTerm(e.target.value.toLowerCase().trim());
-        setSearchParams({ q: e.target.value.toLowerCase().trim() }, { replace: true });
+        setSearchParams({ q: e.target.value }, { replace: true });
         // try {
         //     const result = await fetch (`http://localhost:8080/get-recipe-names?q=${encodeURIComponent(q)}`);
         //     setRecipes(await result.json());
