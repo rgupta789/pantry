@@ -1,4 +1,5 @@
 // import data from "../stuff/ListData.json";
+import { api } from '../api';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -70,7 +71,7 @@ export function InventoryPage() {
     const handleDelete = async (id: number) => {  
         try {
             console.log(id);
-            const res = await fetch(`http://localhost:8080/delete-item/${id}`, {
+            const res = await api(`/delete-item/${id}`, {
             method: 'DELETE'
             });
             // console.log('delete response: ', res.status);
@@ -94,14 +95,11 @@ export function InventoryPage() {
         console.log("b: " + b);
         try {
 
-            const res = await fetch('http://localhost:8080/add', {
+            await api('/add', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
                 body: JSON.stringify({ name, amount, unit, loc }),
             });
-            const data = await res.json();
+            // const data = await res.json();
             fetchData();
             setOpen(false);
             setName('');
@@ -116,10 +114,10 @@ export function InventoryPage() {
 
     const fetchData = async () => {
     try {
-        const response = await fetch('http://localhost:8080/getitems');
-        const result = await response.json();
-        setItems(result);
-        console.log(result);
+        const response = await api<Item[]>('/getitems');
+        // const result = await response.json();
+        setItems(response);
+        // console.log(result);
     } catch (err) {
         console.error('could not get items: ', err);
     }
