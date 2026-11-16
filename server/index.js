@@ -5,7 +5,12 @@ const cors = require('cors');
 const itemsController = require('./controllers/itemsController');
 const recipeController = require('./controllers/recipeController');
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://pantry-snowy-one.vercel.app",
+    "http://localhost:5173"
+  ]
+}));
 app.use(express.json());
 
 app.get('/', (req, res) => {
