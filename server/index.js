@@ -27,17 +27,17 @@ app.delete('/delete-item/:id', itemsController.deleteItem);
 
 app.get('/getitems', itemsController.getItems);
 
-app.listen(8080, () => (
-    console.log('Server listening on port 8080')
-))
+// app.listen(8080, () => (
+//     console.log('Server listening on port 8080')
+// ))
 
-db.one('SELECT $1 AS value', 123)
-  .then((data) => {
-    console.log('DATA:', data.value)
-  })
-  .catch((error) => {
-    console.log('ERROR:', error)
-  })
+// db.one('SELECT $1 AS value', 123)
+//   .then((data) => {
+//     console.log('DATA:', data.value)
+//   })
+//   .catch((error) => {
+//     console.log('ERROR:', error)
+//   })
 
 
 app.get('/get-recipe-names', recipeController.getRecipeNames);
@@ -49,3 +49,8 @@ app.get('/get-recipe/:id', recipeController.getRecipe);
 app.delete('/delete-recipe/:id', recipeController.deleteRecipe);
 
 
+if (!process.env.VERCEL) {
+  app.listen(8080, () => console.log('Server listening on port 8080'));
+}
+
+module.exports = app;

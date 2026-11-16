@@ -1,5 +1,3 @@
-const { PanoramaVerticalSelectSharp } = require('@mui/icons-material');
-
 const pgp = require('pg-promise')();
 require('dotenv').config();
 
