@@ -1,4 +1,5 @@
 // import Recipes from '../stuff/Recipes.json';
+import { api } from '../api';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -131,16 +132,16 @@ export function RecipePage() {
 
         console.log(JSON.stringify({ form }));
         try {
-            const res = await fetch('http://localhost:8080/add-recipe', {
+            await api('/add-recipe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ form })
             });
-            if (!res.ok) throw new Error(`Status ${res.status}`);
+            // if (!res.ok) throw new Error(`Status ${res.status}`);
 
-            await res.json();
+            // await res.json();
 
             setSnack({ 
                 open: true,
@@ -161,8 +162,8 @@ export function RecipePage() {
 
     const getRecipes = async () => {
         try {
-            const result = await fetch (`http://localhost:8080/get-recipe-names?q=${encodeURIComponent(q)}`);
-            setRecipes(await result.json());
+            const result = await api<RecipeSummary[]>(`/get-recipe-names?q=${encodeURIComponent(q)}`);
+            setRecipes(result);
             
         } catch (error) {
             console.log('Request failed: , error');
@@ -193,7 +194,7 @@ export function RecipePage() {
 
         try {
             console.log(id);
-            const result = await fetch(`http://localhost:8080/delete-recipe/${id}`, {
+            await api(`/delete-recipe/${id}`, {
                 method: 'DELETE'
             });
 

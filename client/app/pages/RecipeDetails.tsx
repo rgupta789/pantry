@@ -1,3 +1,4 @@
+import { api } from '../api';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -26,12 +27,10 @@ export function RecipeDetails() {
         
         try {
             console.log("rest");
-            const response = await fetch(`http://localhost:8080/get-recipe/${id}`);
-            if (!response.ok) throw new Error(`Status ${response.status}`);
-            const data: Recipe = await response.json();
-            setRecipe(data);
+            const response = await api<Recipe>(`/get-recipe/${id}`);
 
-            console.log(recipe);
+            // const data: Recipe = await response.json();
+            setRecipe(response);
         } catch (error) {
             console.log(error);
         }
